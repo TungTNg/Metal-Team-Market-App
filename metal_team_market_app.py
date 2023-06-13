@@ -8,8 +8,8 @@ class MarketplaceDB:
             self.connection = mysql.connector.connect(
                 host='localhost',
                 database='metal_team_marketplace',
-                user='your_mysql_username',
-                password='your_mysql_password'
+                user='root',
+                password='database'
             )
 
             if self.connection.is_connected():
@@ -49,7 +49,12 @@ class MarketplaceDB:
     def create_product(self, product_name, description, price):
         try:
             cursor = self.connection.cursor()
-            cursor.execute(f"INSERT INTO Product (product_name, description, price) VALUES ('{product_name}', '{description}', {price});")
+            cursor.execute("SELECT COUNT(*) FROM Product;")
+            result = cursor.fetchone()
+            product_id = result[0] + 1
+            product_quantity = int(1)
+            cursor.execute(f"INSERT INTO Product (product_id, product_name, description, price) VALUES ('{product_id}', '{product_name}', '{description}', {price});")
+            cursor.execute(f"INSERT INTO Inventory (inventory_id, product_id, quantity) VALUES ('{product_id}', '{product_id}', {product_quantity});")
             self.connection.commit()
             if cursor.rowcount > 0:
                 print(f"Product '{product_name}' successfully created")
