@@ -8,8 +8,8 @@ class MarketplaceDB:
             self.connection = mysql.connector.connect(
                 host='localhost',
                 database='metal_team_marketplace',
-                user='root',
-                password='database'
+                user='your_mysql_username',
+                password='your_mysql_password'
             )
 
             if self.connection.is_connected():
